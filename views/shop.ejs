@@ -1,0 +1,103 @@
+<%- include('./partials/header') %>
+
+<div class="flex p-5">
+    <!-- Sidebar (Only visible on Desktop) -->
+    <div class="hidden lg:flex flex-col w-64 bg-gray-100 shadow-lg p-6 rounded-lg transition-all duration-300 ease-in-out">
+        <h3 class="text-xl font-semibold mb-4">Filters</h3>
+        <a href="/shop?filter=new" class="mb-3 text-gray-700 hover:text-indigo-600 transition duration-300">New Collection</a>
+        <a href="/shop" class="mb-3 text-gray-700 hover:text-indigo-600 transition duration-300">All Products</a>
+        <a href="/shop?filter=discount" class="mb-3 text-gray-700 hover:text-indigo-600 transition duration-300">Discounted Products</a>
+        
+        <h3 class="text-xl font-semibold mt-6 mb-4">Sort By</h3>
+        <form action="/shop">
+            <select name="sortby" class="border p-3 rounded-md shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                <option value="popular">Popular</option>
+                <option value="newest">Newest</option>
+            </select>
+        </form>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4">
+        <% products.forEach(function(product) { %>
+        <div class="relative group overflow-hidden rounded-lg bg-white shadow-lg transform hover:scale-105 transition-all duration-300">
+            <% if (product.discount > 0) { %>
+            <span class="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-md">
+                -Rs<%= product.discount %> OFF
+            </span>
+            <% } %>
+            <div class="w-full h-52 flex items-center justify-center bg-gray-200">
+              <img class="h-[12rem] object-cover" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="Product Image" />
+            </div>
+            <div class="flex justify-between items-center p-4 bg-white">
+                <div>
+                    <h3 class="font-semibold text-lg text-gray-800"><%= product.name %></h3>
+                    <div class="flex items-center gap-2">
+                        <% if (product.discount > 0) { %>
+                        <h4 class="text-gray-500 line-through">Rs <%= product.price %></h4>
+                        <h4 class="text-red-600 font-semibold">Rs <%= product.price - product.discount %></h4>
+                        <% } else { %>
+                        <h4 class="text-gray-800">Rs <%= product.price %></h4>
+                        <% } %>
+                    </div>
+                </div>
+                <a class="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-600 text-white shadow-md hover:bg-indigo-700 transition-all duration-300" href="/addtocart/<%= product._id %>">
+                    <i class="ri-add-line"></i>
+                </a>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>
+
+<!-- Cart Panel -->
+<div class="relative">
+  <!-- Cart Panel -->
+  <div id="cartPanel" class="fixed top-0 right-0 w-96 max-h-screen bg-white shadow-xl transform translate-x-full transition-transform duration-300 p-6 rounded-lg">
+      <h2 class="text-2xl font-bold mb-6 text-center">Your Cart</h2>
+
+      <!-- Cart Content Area -->
+      <div class="cart-content overflow-y-auto max-h-[calc(100vh-200px)]">
+        <% if (user && user.cart && user.cart.length > 0) { %>
+              <% user.cart.forEach(function(item){ %>
+                  <div class="cart-item flex justify-between items-center bg-gray-50 p-4 mb-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                      <div class="flex items-center space-x-4">
+                          <img src="<%= item.image ? 'data:image/jpeg;base64,' + item.image.toString('base64') : '/path/to/default-image.jpg' %>" alt="" class="w-20 h-20 rounded-lg object-cover shadow-md">
+                          <div>
+                              <h3 class="text-lg font-semibold text-gray-800"><%= item.name %></h3>
+                              <p class="text-sm text-gray-500">Rs <%= item.price + 20 - item.discount %></p>
+                          </div>
+                      </div>
+                      <form action="/remove-from-cart" method="POST">
+                          <input type="hidden" name="itemId" value="<%= item._id %>">
+                          <button type="submit" class="text-red-500 hover:text-red-600 text-xl">✖</button>
+                      </form>
+                  </div>
+              <% }) %>
+
+              <div class="bg-indigo-50 p-4 rounded-lg mt-6">
+                  <h3 class="text-xl font-semibold text-indigo-700">Total: Rs <%= bill %></h3>
+                  <button class="w-full bg-indigo-600 text-white py-3 rounded-lg mt-4 hover:bg-indigo-700 transition duration-300">Proceed to Checkout</button>
+              </div>
+          <% } else { %>
+              <p class="text-gray-600 text-lg text-center">Your cart is empty.</p>
+          <% } %>
+      </div>
+  </div>
+
+  <!-- Open Cart Button -->
+  <button id="openCart" class="fixed bottom-5 right-5 bg-indigo-600 text-white px-6 py-3 rounded-full shadow-md hover:bg-indigo-700 transition duration-300">
+      🛒 View Cart
+  </button>
+</div>
+
+<script>
+  const cartPanel = document.getElementById("cartPanel");
+  const openCart = document.getElementById("openCart");
+
+  openCart.addEventListener("click", () => {
+      cartPanel.classList.toggle("translate-x-full");
+  });
+</script>
+
+<%- include('./partials/footer') %>
