@@ -1,12 +1,16 @@
-require("dotenv").config(); // Load environment variables
+require('dotenv').config();
+console.log("🚀 MONGODB_URI:", process.env.MONGODB_URI);
 
 const express = require("express");
 const app = express();
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
+const expressSession = require("express-session");
 const flash = require("express-flash");
+const dotenv = require("dotenv");
+
+// Load Environment Variables
+dotenv.config();
 
 // Database Connection
 require("./config/mongoose-connection");
@@ -17,21 +21,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-// Express Session Middleware
+// Express Session Middleware (Fix: Move this ABOVE flash)
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+
 app.use(
   session({
-    secret: "your-secret-key",
+    secret: 'your-secret-key',
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URI, // Ensure this is set
-      collectionName: "sessions",
+      mongoUrl: process.env.MONGODB_URI, // Use your DB connection
+      collectionName: 'sessions',
     }),
     cookie: { secure: false }, // Change to `true` if using HTTPS
   })
 );
 
-// Flash Messages
+// Flash Messages (Fix: Move this BELOW expressSession)
 app.use(flash());
 
 // Set View Engine
