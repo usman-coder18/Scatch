@@ -16,7 +16,7 @@ if (!dbURI) {
 }
 
 mongoose
-  .connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(dbURI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => {
     console.error("❌ MongoDB Connection Error:", err);
