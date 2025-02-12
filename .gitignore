@@ -7,7 +7,7 @@ config/*.json
 # Ignore sensitive config files
 .env
 config/key.js
-config/mongoose-connection.js
+# config/mongoose-connection.js
 config/*.json
 
 # Environment & Config Files
