@@ -1,12 +1,12 @@
 # Ignore sensitive config files
 .env
-config/keys.js
-config/multer-config.js
-config/*.json
+# config/keys.js
+# config/multer-config.js
+# config/*.json
 
 # Ignore sensitive config files
 .env
-config/key.js
+# config/key.js
 # config/mongoose-connection.js
 config/*.json
 
