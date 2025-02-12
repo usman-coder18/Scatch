@@ -86,28 +86,30 @@ router.get("/login", (req, res) => {
 });
 
 // ✅ Admin Dashboard Route (Fetch & Show Products)
-router.get("/admin-dashboard",isAdmin, async function (req, res) {
+router.get("/admin-dashboard", isAdmin, async function (req, res) {
   try {
-    const products = await productModel.find(); // Fetch all products
+    const products = await productModel.find(); // ✅ Fetch all products
+const {bgColor,
+  panelColor,
+  textColor,} = req.body
+    console.log("Fetched Products:", products); // ✅ Debugging
 
     res.render("admin-dashboard", {
       admin: req.user,
-      products,
-      bgcolor: req.body.bgcolor,
-      panelcolor: req.body.panelcolor,
-      textcolor: req.body.textcolor,
+      products, // ✅ Yehi object pass karna hai
+      bgColor,
+      panelColor,
+      textColor,
     });
   } catch (error) {
     console.error("❌ Error fetching products:", error);
     res.render("admin-dashboard", {
       admin: req.user,
       products: [],
-      bgColor: "#f5f5f5",
-      panelColor: "#ffffff",
-      textColor: "#333333",
     });
   }
 });
+
 
 // ✅ Logout Route
 router.get("/users/logout", (req, res) => {

@@ -7,38 +7,37 @@ const isAdmin = require("../middlewares/isAdmin"); // Ensure this file exists an
 // ✅ Create a New Product
 router.post("/create", upload.single("image"), async function (req, res) {
     try {
-        // Destructure form data
         let { name, price, discount, bgcolor, textcolor, panelcolor } = req.body;
 
-        // ✅ Validate Required Fields
+        // Debugging logs
+        console.log("Received Data:", req.body); // Check if colors are coming from form
+
         if (!name || !price) {
             req.flash("error", "Name and price are required");
             return res.redirect("/owners/admin");
         }
 
-        // ✅ Handle Missing Image
         let image = req.file ? req.file.buffer : null;
 
-        // ✅ Create Product in DB
         let product = await productModel.create({
             name,
             price,
-            discount: discount || 0, // Default discount to 0 if not provided
+            discount: discount || 0,
             bgcolor,
             textcolor,
             panelcolor,
-            image, // Will be null if no file was uploaded
+            image,
         });
 
+        console.log("Saved Product:", product); // Check if colors are saved in DB
         req.flash("success", "Product created successfully");
         res.redirect("/owners/admin-dashboard");
-
-
     } catch (err) {
         console.error("❌ Error creating product:", err.message);
         res.status(500).send("Error: " + err.message);
     }
 });
+
 
 // ✅ Delete Product Route
 router.post("/delete/:productid", isAdmin, async function (req, res) {

@@ -11,11 +11,11 @@ module.exports = async function (req, res, next) {
     try {
         // Decode the admin token
         const decoded = jwt.verify(req.cookies.adminToken, process.env.JWT_SECRET);
-        console.log("✅ Decoded Token in Middleware:", decoded);
+        // console.log("✅ Decoded Token in Middleware:", decoded);
 
         // Fetch the admin (owner) using the decoded ID
         let owner = await ownerModel.findById(decoded.id);
-        console.log("✅ Owner Found in Middleware:", owner);
+        // console.log("✅ Owner Found in Middleware:", owner);
 
         // If no owner is found, deny access
         if (!owner) {
@@ -25,12 +25,12 @@ module.exports = async function (req, res, next) {
 
         // Attach the owner (admin) data to the request
         req.owner = owner; 
-        console.log("✅ req.owner Set:", req.owner);
+        // console.log("✅ req.owner Set:", req.owner);
 
         // Proceed to the next middleware or route handler
         next();
     } catch (err) {
-        console.log("❌ Error in Admin Middleware:", err);
+        // console.log("❌ Error in Admin Middleware:", err);
         req.flash("error", "Something went wrong");
         res.redirect("/"); // Redirect to home or an error page
     }

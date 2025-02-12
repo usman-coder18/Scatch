@@ -12,24 +12,28 @@ router.get("/", function (req, res) {
 
 router.get("/shop", isLoggedIn, async function (req, res) {
     try {
-        let products = await productModel.find(); // Fetch products from DB
+        let products = await productModel.find(); // Fetch all products
         let user = await userModel.findOne({ email: req.user.email }).populate("cart"); // Fetch user & cart
         let success = req.flash("success") || []; 
         let error = req.flash("error") || []; 
         
         // 🔥 Fix: Calculate the bill
         let bill = 0;
+        let cartCount = 0; // Cart item count
+
         if (user && user.cart.length > 0) {
+            cartCount = user.cart.length; // ✅ Total items in cart
             bill = user.cart.reduce((total, item) => {
                 return total + (Number(item.price) + 20 - Number(item.discount));
             }, 0);
         }
 
-        res.render("shop", { products, success, error, user, bill , }); // Pass `bill` to the template
+        res.render("shop", { products, success, error, user, bill, cartCount }); // ✅ Passing cartCount to EJS
     } catch (err) {
         res.status(500).send("Error fetching products: " + err.message);
     }
 });
+
 
 
 router.get("/addtocart/:productid", isLoggedIn, async function (req, res) {
@@ -139,7 +143,7 @@ router.get("/products/create", function (req,res) {
     
     
     let success = req.flash("success") || ""; // Ensure success variable is always defined
-    res.render("createproducts",{success});
+    res.render("createproducts",{ success, bgcolor: req.body.bgcolor, panelcolor: req.body.panelcolor, textcolor: req.body.textcolor });
 })
 router.get("/allproducts/owners/admin-dashboard", function (req,res) {
     res.render("admin-dashboard", { admin: req.owner });
