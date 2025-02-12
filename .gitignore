@@ -8,12 +8,12 @@
 .env
 # config/key.js
 # config/mongoose-connection.js
-config/*.json
+# config/*.json
 
 # Environment & Config Files
 .env
-config.json
-config/*.json
+# config.json
+# config/*.json
 
 # dependencies
 /node_modules
