@@ -3,20 +3,24 @@ const config = require('config');
 const mongoose = require('mongoose');
 const debug = require('debug')("development:mongoose");
 
-const MONGODB_URI = config.get("MONGODB_URI");
+// const config = require("config");
 
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  console.log("✅ Successfully connected to MongoDB Atlas");
-  debug("Connected to MongoDB Atlas");
-})
-.catch((err) => {
-  console.error("❌ MongoDB Atlas Connection Failed:", err);
-  debug("MongoDB Atlas Connection Error:", err);
+// const mongoose = require("mongoose");
+
+// Check if MONGODB_URI is set
+const dbURI = process.env.MONGODB_URI || config.get("MONGODB_URI");
+
+if (!dbURI) {
+  console.error("❌ MONGODB_URI is not defined! Check Railway environment variables.");
   process.exit(1);
-});
+}
 
-module.exports = mongoose.connection;
+mongoose
+  .connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => {
+    console.error("❌ MongoDB Connection Error:", err);
+    process.exit(1);
+  });
+
+module.exports = mongoose;
