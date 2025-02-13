@@ -8,7 +8,7 @@ module.exports = async function (req, res, next) {
 
     // Check for cookies
     if (!req.cookies || (!req.cookies.token && !req.cookies.adminToken && !req.cookies.userToken)) {
-        console.log("❌ No token found in cookies!");
+        // console.log("❌ No token found in cookies!");
         req.flash("error", "You need to login first");
         return res.redirect("/");  // Or wherever you want to redirect
     }

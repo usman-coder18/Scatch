@@ -92,7 +92,7 @@ router.get("/admin-dashboard", isAdmin, async function (req, res) {
 const {bgColor,
   panelColor,
   textColor,} = req.body
-    console.log("Fetched Products:", products); // ✅ Debugging
+    // console.log("Fetched Products:", products); // ✅ Debugging
 
     res.render("admin-dashboard", {
       admin: req.user,
@@ -102,7 +102,7 @@ const {bgColor,
       textColor,
     });
   } catch (error) {
-    console.error("❌ Error fetching products:", error);
+    // console.error("❌ Error fetching products:", error);
     res.render("admin-dashboard", {
       admin: req.user,
       products: [],
@@ -130,7 +130,7 @@ router.post("/products/delete/:id", async function (req, res) {
 
     req.flash("success", "Product deleted successfully");
   } catch (error) {
-    console.error("Error deleting product:", error);
+    // console.error("Error deleting product:", error);
     req.flash("error", "Error deleting product");
   }
 

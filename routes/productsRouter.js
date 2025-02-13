@@ -10,7 +10,7 @@ router.post("/create", upload.single("image"), async function (req, res) {
         let { name, price, discount, bgcolor, textcolor, panelcolor } = req.body;
 
         // Debugging logs
-        console.log("Received Data:", req.body); // Check if colors are coming from form
+        // console.log("Received Data:", req.body); // Check if colors are coming from form
 
         if (!name || !price) {
             req.flash("error", "Name and price are required");
@@ -29,11 +29,11 @@ router.post("/create", upload.single("image"), async function (req, res) {
             image,
         });
 
-        console.log("Saved Product:", product); // Check if colors are saved in DB
+        // console.log("Saved Product:", product); // Check if colors are saved in DB
         req.flash("success", "Product created successfully");
         res.redirect("/owners/admin-dashboard");
     } catch (err) {
-        console.error("❌ Error creating product:", err.message);
+        // console.error("❌ Error creating product:", err.message);
         res.status(500).send("Error: " + err.message);
     }
 });
@@ -49,7 +49,7 @@ router.post("/delete/:productid", isAdmin, async function (req, res) {
       }
       req.flash("success", "Product deleted successfully");
   } catch (err) {
-      console.error("❌ Error deleting product:", err.message);
+    //   console.error("❌ Error deleting product:", err.message);
       req.flash("error", "Error deleting product");
   }
   res.redirect("/owners/admin-dashboard");
@@ -59,7 +59,7 @@ router.post("/delete-all", isAdmin, async function (req, res) {
       await productModel.deleteMany({}); // Deletes all products
       req.flash("success", "All products deleted successfully");
   } catch (err) {
-      console.error("❌ Error deleting all products:", err.message);
+    //   console.error("❌ Error deleting all products:", err.message);
       req.flash("error", "Error deleting products");
   }
   res.redirect("/owners/admin-dashboard");
