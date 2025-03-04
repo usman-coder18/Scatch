@@ -1,37 +1,54 @@
-<div class="cart-content space-y-12">
-    <% if (user && user.cart && user.cart.length > 0) { %>
-        <% user.cart.forEach(function(item, index){ %>
-            <div class="cart-item flex justify-between items-center bg-white p-6 rounded-xl shadow-xl hover:shadow-2xl transition-transform transform hover:scale-105 hover:shadow-2xl duration-300 animate__animated animate__fadeInUp" style="animation-delay: <%= index * 0.1 %>s;">
-                <div class="flex items-center space-x-8">
-                    <div class="cart-image overflow-hidden rounded-lg shadow-md">
-                        <img src="data:image/jpeg;base64,<%= item.image.toString('base64') %>" alt="" class="object-cover w-24 h-24 transform transition duration-300 hover:scale-110">
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-800 hover:text-indigo-600 transition duration-300"><%= item.name %></h3>
-                        <p class="text-sm text-gray-500 mt-2">Rs <%= item.price + 20 - item.discount %></p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-6">
-                    <form action="/remove-from-cart" method="POST">
-                        <input type="hidden" name="itemId" value="<%= item._id %>">
-                        <button type="submit" class="text-red-500 hover:text-red-600 text-lg transform transition duration-300">✖</button>
-                    </form>
-                    <button class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300 transform hover:scale-110">Update</button>
-                </div>
-            </div>
-        <% }) %>
+<script src="https://cdn.tailwindcss.com"></script>
+<div class="max-w-4xl mx-auto p-6">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Your Shopping Cart</h1>
 
-        <div class="p-8 mt-16 bg-blue-600 rounded-xl shadow-xl">
-            <div class="flex justify-between items-center">
-                <h3 class="text-3xl font-semibold text-white">
-                    Total: Rs <%= bill %>
-                </h3>
-                <button class="px-12 py-3 bg-white text-blue-600 text-xl font-semibold rounded-full hover:bg-blue-500 hover:text-white transform transition duration-300 ease-in-out hover:scale-105 shadow-lg">
-                    Proceed to Checkout
-                </button>
-            </div>
+    <% if (user && user.cart && user.cart.length > 0) { %>
+        <div class="cart-content space-y-8">
+            <% user.cart.forEach(function(item, index){ %>
+                <div class="cart-item flex flex-col sm:flex-row justify-between items-center bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 animate__animated animate__fadeInUp" style="animation-delay: <%= index * 0.1 %>s;">
+                    
+                    <!-- Product Image -->
+                    <div class="flex items-center space-x-6 w-full sm:w-auto">
+                        <div class="cart-image overflow-hidden rounded-lg shadow-md w-24 h-24">
+                            <img src="data:image/jpeg;base64,<%= item.image.toString('base64') %>" alt="" class="object-cover w-full h-full transition-transform duration-300 hover:scale-110">
+                        </div>
+                        <div>
+                            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 hover:text-indigo-600 transition duration-300"><%= item.name %></h3>
+                            <p class="text-gray-500 text-sm mt-1">Rs <%= item.price + 20 - item.discount %></p>
+                        </div>
+                    </div>
+
+                    <!-- Quantity & Actions -->
+                    <div class="flex items-center space-x-4 mt-4 sm:mt-0">
+                        <form action="" method="POST" class="flex items-center space-x-2">
+                            <input type="hidden" name="itemId" value="<%= item._id %>">
+                            <input type="number" name="quantity" value="1" min="1" class="w-12 text-center border rounded-md py-1">
+                            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 transform hover:scale-105">Update</button>
+                        </form>
+
+                        <form action="/remove-from-cart" method="POST">
+                            <input type="hidden" name="itemId" value="<%= item._id %>">
+                            <button type="submit" class="text-red-500 hover:text-red-600 text-lg transform transition duration-300">✖</button>
+                        </form>
+                    </div>
+                </div>
+            <% }) %>
         </div>
+
+        <!-- Cart Total & Checkout -->
+        <div class="mt-12 p-6 bg-blue-600 rounded-xl shadow-lg text-white text-center">
+            <h3 class="text-2xl font-semibold">Total: Rs <%= bill %></h3>
+            <button class="mt-4 px-8 py-3 bg-white text-blue-600 text-lg font-semibold rounded-full hover:bg-blue-500 hover:text-white transform transition duration-300 ease-in-out hover:scale-105 shadow-md">
+                Proceed to Checkout
+            </button>
+        </div>
+
     <% } else { %>
-        <p class="text-gray-600 text-lg text-center">Your cart is empty.</p>
+        <div class="text-center">
+            <p class="text-gray-600 text-lg">Your cart is empty.</p>
+            <a href="/shop" class="mt-4 inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition duration-300">
+                Continue Shopping
+            </a>
+        </div>
     <% } %>
 </div>
