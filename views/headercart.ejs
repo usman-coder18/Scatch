@@ -7,7 +7,6 @@
             <% user.cart.forEach(function(item, index){ %>
                 <div class="cart-item flex flex-col sm:flex-row justify-between items-center bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 animate__animated animate__fadeInUp" style="animation-delay: <%= index * 0.1 %>s;">
                     
-                    <!-- Product Image -->
                     <div class="flex items-center space-x-6 w-full sm:w-auto">
                         <div class="cart-image overflow-hidden rounded-lg shadow-md w-24 h-24">
                             <img src="data:image/jpeg;base64,<%= item.image.toString('base64') %>" alt="" class="object-cover w-full h-full transition-transform duration-300 hover:scale-110">
@@ -18,7 +17,6 @@
                         </div>
                     </div>
 
-                    <!-- Quantity & Actions -->
                     <div class="flex items-center space-x-4 mt-4 sm:mt-0">
                         <form action="" method="POST" class="flex items-center space-x-2">
                             <input type="hidden" name="itemId" value="<%= item._id %>">
@@ -35,7 +33,6 @@
             <% }) %>
         </div>
 
-        <!-- Cart Total & Checkout -->
         <div class="mt-12 p-6 bg-blue-600 rounded-xl shadow-lg text-white text-center">
             <h3 class="text-2xl font-semibold">Total: Rs <%= bill %></h3>
             <button class="mt-4 px-8 py-3 bg-white text-blue-600 text-lg font-semibold rounded-full hover:bg-blue-500 hover:text-white transform transition duration-300 ease-in-out hover:scale-105 shadow-md">
