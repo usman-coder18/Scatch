@@ -1,62 +1,51 @@
 const express = require("express");
 const router = express.Router();
-const ownerModel = require("../models/owner-model"); // Owner Model
-const productModel = require("../models/product-model"); // Product Model
-const bcrypt = require("bcryptjs"); // For Password Hashing
-const jwt = require("jsonwebtoken"); // For Token Generation
+const ownerModel = require("../models/owner-model"); 
+const productModel = require("../models/product-model"); 
+const bcrypt = require("bcryptjs"); 
+const jwt = require("jsonwebtoken"); 
 const dotenv = require("dotenv");
-const cookieParser = require("cookie-parser"); // Required for reading cookies
+const cookieParser = require("cookie-parser"); 
 const isLoggedIn = require("../middlewares/isLoggedIn");
 const isAdmin = require("../middlewares/isAdmin");
 
-dotenv.config(); // Load .env Variables
-router.use(cookieParser()); // Middleware to use cookies
+dotenv.config(); 
+router.use(cookieParser()); 
 
-// ✅ Middleware to Verify Admin Login
 const verifyAdmin = (req, res, next) => {
-  const token = req.cookies.adminToken; // Get token from cookie
-  if (!token) return res.redirect("/owners/login"); // Redirect if not logged in
+  const token = req.cookies.adminToken;
+  if (!token) return res.redirect("/owners/login");
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify JWT
-    req.user = decoded; // Attach user data to request
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
+    req.user = decoded; 
     next();
   } catch (error) {
-    console.error("❌ Invalid Token:", error);
     res.redirect("/owners/login");
   }
 };
 
-// ✅ Apply Middleware to Protect Routes
 router.use("/admin-dashboard", verifyAdmin);
 
-// ✅ Admin Login Route
 router.post("/login", async function (req, res) {
   const { email, password } = req.body;
 
   try {
-    console.log("🔍 Searching for email:", email);
     const owner = await ownerModel.findOne({ email });
 
     if (!owner) {
-      console.log("❌ Admin not found in database!");
       req.flash("error", "Admin not found");
       return res.redirect("/owners/login");
     }
 
-    console.log("✅ Admin found:", owner);
 
-    // Compare hashed password
     const isMatch = await bcrypt.compare(password, owner.password);
     if (!isMatch) {
-      console.log("❌ Password mismatch!");
       req.flash("error", "Invalid credentials");
       return res.redirect("/owners/login");
     }
 
-    console.log("✅ Password matched!");
 
-    // ✅ Generate JWT token
     const token = jwt.sign(
       { id: owner._id, fullname: owner.fullname },
       process.env.JWT_SECRET,
@@ -69,40 +58,34 @@ router.post("/login", async function (req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    console.log("✅ Login successful!");
     req.flash("success", "Login successful");
     res.redirect("/owners/admin-dashboard");
 
   } catch (error) {
-    console.error("❌ Error during login:", error);
     req.flash("error", "Something went wrong");
     res.redirect("/owners/login");
   }
 });
 
-// ✅ Show Login Page
 router.get("/login", (req, res) => {
-  res.render("owner-login", { messages: req.flash() }); // Pass messages
+  res.render("owner-login", { messages: req.flash() }); 
 });
 
-// ✅ Admin Dashboard Route (Fetch & Show Products)
 router.get("/admin-dashboard", isAdmin, async function (req, res) {
   try {
-    const products = await productModel.find(); // ✅ Fetch all products
+    const products = await productModel.find(); 
 const {bgColor,
   panelColor,
   textColor,} = req.body
-    // console.log("Fetched Products:", products); // ✅ Debugging
 
     res.render("admin-dashboard", {
       admin: req.user,
-      products, // ✅ Yehi object pass karna hai
+      products, 
       bgColor,
       panelColor,
       textColor,
     });
   } catch (error) {
-    // console.error("❌ Error fetching products:", error);
     res.render("admin-dashboard", {
       admin: req.user,
       products: [],
@@ -111,14 +94,12 @@ const {bgColor,
 });
 
 
-// ✅ Logout Route
 router.get("/users/logout", (req, res) => {
-  res.clearCookie("adminToken"); // Remove JWT token
+  res.clearCookie("adminToken");  
   req.flash("success", "Logged out successfully");
   res.redirect("/owners/login");
 });
 
-// ✅ Delete Product Route
 router.post("/products/delete/:id", async function (req, res) {
   try {
     const deletedProduct = await productModel.findByIdAndDelete(req.params.id);
@@ -130,16 +111,9 @@ router.post("/products/delete/:id", async function (req, res) {
 
     req.flash("success", "Product deleted successfully");
   } catch (error) {
-    // console.error("Error deleting product:", error);
     req.flash("error", "Error deleting product");
   }
 
   res.redirect("/owners/admin-dashboard");
 });
-// router.get("/account",isLoggedIn, (req, res) => {
-//   console.log("router hit");
-  
-//   res.render("account"); // Pass messages
-// });
-
-module.exports = router; // ✅ Export Router
+module.exports = router; 

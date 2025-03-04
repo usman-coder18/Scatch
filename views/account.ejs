@@ -8,20 +8,17 @@
 </head>
 <body class="bg-gray-100">
 
-    <!-- Navbar (You can include your existing navbar here) -->
     <header class="bg-white shadow-md p-4">
         <h1 class="text-xl font-semibold text-center">My Account</h1>
     </header>
 
     <div class="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-        <!-- Profile Section -->
         <div class="text-center border-b pb-6">
-            <img src="../images/InShot_20240411_031554075.jpg" alt="Profile Picture" class="w-20 h-20 rounded-full mx-auto border">
+            <img src="" alt="Profile Picture" class="w-20 h-20 rounded-full mx-auto border">
             <h2 class="text-2xl font-semibold mt-3"><%=user.fullname%></h2>
             <p class="text-gray-500"><%=user.email%></p>
         </div>
 
-        <!-- Account Options -->
         <div class="mt-6 space-y-4">
             <a href="/profile" class="block bg-gray-200 px-6 py-4 rounded-lg flex items-center gap-3 text-gray-800 hover:bg-gray-300">
                 👤 <span class="font-medium">Edit Profile</span>

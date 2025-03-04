@@ -5,4 +5,4 @@ const upload = multer({
     storage:storage
 })
 
-module.exports = upload; // Export the upload middleware for use in routes or controllers.
+module.exports = upload; 

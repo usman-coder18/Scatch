@@ -1,7 +1,6 @@
 <%- include('./partials/header') %>
 
 <div class="flex p-5">
-    <!-- Sidebar (Only visible on Desktop) -->
     <div class="hidden lg:flex flex-col w-64 bg-gray-100 shadow-lg p-6 rounded-lg transition-all duration-300 ease-in-out">
         <h3 class="text-xl font-semibold mb-4">Filters</h3>
         <a href="/shop?filter=new" class="mb-3 text-gray-700 hover:text-indigo-600 transition duration-300">New Collection</a>
@@ -17,7 +16,6 @@
         </form>
     </div>
 
-    <!-- Product Grid -->
     <div class="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4">
         <% products.forEach(function(product) { %>
             <div class="relative group overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
@@ -53,8 +51,6 @@
     </div>
 </div>
 
-<!-- Cart Panel -->
-<!-- Open Cart Button -->
 <button id="openCart" class="fixed bottom-5 right-5 bg-indigo-600 text-white px-6 py-3 rounded-full shadow-md hover:bg-indigo-700 transition duration-300">
     🛒 View Cart
     <% if (user && user.cart && user.cart.length > 0) { %>
@@ -68,7 +64,6 @@
     <% } %>
 </button>
 
-<!-- Cart Panel -->
 <div id="cartPanel" class="fixed top-0 right-0 w-96 max-h-screen bg-white shadow-xl transform translate-x-full transition-transform duration-300 p-6 rounded-lg">
     <h2 class="text-2xl font-bold mb-6 text-center">Your Cart</h2>
     <div class="cart-content overflow-y-auto max-h-[calc(100vh-200px)]">
@@ -108,7 +103,6 @@
         cartPanel.classList.toggle("translate-x-full");
     });
 
-    // Function to update cart count dynamically
     function updateCartCount(count) {
         if (count > 0) {
             cartCountBadge.innerText = count;
@@ -118,7 +112,6 @@
         }
     }
 
-    // Example: Fake event listener (Replace with real add-to-cart logic)
     document.querySelectorAll(".add-to-cart-btn").forEach(button => {
         button.addEventListener("click", function() {
             let currentCount = parseInt(cartCountBadge.innerText) || 0;

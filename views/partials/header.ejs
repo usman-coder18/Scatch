@@ -10,37 +10,28 @@
 
     <body class="font-['helvetica_now_display'] relative">
         <nav class="w-full flex justify-between items-center px-5 py-3 bg-white shadow-md">
-            <!-- Logo -->
             <h3 class="text-2xl font-bold text-blue-500">Scatch</h3>
 
             <% var loggedin = typeof loggedin !== "undefined" ? loggedin : true %>
 
-            <!-- Desktop Navigation Links -->
             <% if (loggedin) { %>
             <div class="hidden md:flex gap-5">
                 <a href="/shop">Shop</a>
                 <a href="/headercart">Cart</a>
                 <a href="/account">My Account</a>
 
-                <!-- <a href="/myaccount">My Account</a> -->
-                <!-- <a href="/logout" class="block bg-red-500 px-6 py-4 rounded-lg flex items-center gap-3 text-white hover:bg-red-600">
-                    🚪 <span class="font-medium">Logout</span> -->
-                <!-- </a> -->
                 
                 <a class="text-red-600" href="/users/logout">Logout</a>
             </div>
             <% } %>
 
-            <!-- Mobile Hamburger Button -->
             <button id="hamburger" class="md:hidden text-2xl">
                 ☰
             </button>
         </nav>
 
-        <!-- Mobile Menu Overlay -->
         <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
 
-        <!-- Mobile Menu -->
         <div id="mobileMenu"
             class="fixed top-0 left-0 w-3/4 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 p-6 z-50">
             <button id="closeMenu" class="text-xl font-bold absolute top-4 right-4">✕</button>
@@ -56,7 +47,6 @@
             <% } %>
         </div>
 
-        <!-- JavaScript for Mobile Menu Toggle -->
         <script>
             const hamburger = document.getElementById('hamburger');
             const mobileMenu = document.getElementById('mobileMenu');

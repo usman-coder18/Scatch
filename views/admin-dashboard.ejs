@@ -47,7 +47,6 @@
         </a>
     </div>
     
-    <!-- Main Content -->
     <div class="w-full lg:w-[75%] flex flex-col gap-6">
         <% if (!products || products.length === 0) { %>
             <p class="text-xl text-black text-center">No products available.</p>
@@ -59,7 +58,6 @@
                 </form>
             </div>
 
-            <!-- ✅ Product Grid with Colors -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 <% products.forEach(product => { %>
                     <div class="w-full rounded-lg shadow-md overflow-hidden" style="background-color: <%= product.panelcolor %>;">
