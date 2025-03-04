@@ -20,7 +20,7 @@ module.exports.registerUser = async function (req, res) {
 
     let token = generateToken(newUser);
     res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-    res.send("User created successfully");
+    res.redirect("/");
   } catch (err) {
     console.error("Error during registration:", err.message);
     res.status(500).send("Something went wrong");
